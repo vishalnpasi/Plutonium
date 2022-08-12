@@ -2,9 +2,22 @@ const express = require('express');
 const myHelper = require('../util/helper')
 const underscore = require('underscore');
 const { Router } = require('express');
+const UserModel = require("../models/useModel.js");
+const userController = require('../controllers/userController');
 
 const router = express.Router();
 
+// router.post("/createUser",userController.creatUser);
+// router.post("/createUser", async function(req,res){
+//     let data = req.body
+//     let savedData = await UserModel.create(data)
+//     res.send({msg: savedData })
+// });
+
+// router.get('/getUser',async function(req,res){
+//     let allUser = await UserModel.find();
+//     res.send({msg:allUser})
+// });
 router.get('/test-me', function (req, res) {
     myHelper.printDate()
     myHelper.getCurrentMonth()
@@ -78,37 +91,7 @@ router.get("/films/:filmId", function (req, res) {
     res.send("The film id doesn't match any movie")
 })
 
-router.get('/test-me2', function (req, res) {
-    res.send('My API awesome properly')
-})
-
-router.get('/test-api', function (req, res) {
-    res.send('hi functionup')
-})
-
-router.get('/test-api-2', function (req, res) {
-    res.send('hi Functionup , this is another cool API')
-})
-
-
-router.get('/test-api-3', function (req, res) {
-    res.send('hi Functionup , this is another cool API , and now i am bored of creating api')
-})
-
-
-router.get('/test-api-4', function (req, res) {
-    res.send('hi Functionup , this is another cool API , and now i am bored of creating api , PLs Stop creating MORE Apis')
-})
-
-router.get('/test-api-5', function (req, res) {
-    res.send('hi Functionup , this is another cool API , and now i am bored of creating api , PLs Stop creating MORE Apis')
-})
-
-
-router.get('/test-api-6', function (req, res) {
-    res.send({a: 6 , b: 45})
-})
-
+ 
 router.post('/test-post', function (req, res) {
 
     let id = req.body.user
@@ -157,6 +140,37 @@ let players = [
            ]
        },
    ]
+   let boockings = [
+        {
+            'bookingNumber': 1,
+            'sportId': "",
+            'centerId': "",
+            'type': 'private',
+            'slot': '16286598000000',
+            'bookedOn': '31/08/2021',
+            'bookedFor': '01/09/2021'
+        }
+       
+   ]
+
+router.post('/players/:playerName/bookings/:bookingId',function(req,res){
+
+    let playerName = req.params.playerName
+    if(players.find(player => player.name == playerName)) {
+
+        let bookingId = req.params.bookingId
+        if(boockings.find( bookingDetail => bookingDetail.bookingNumber == bookingId )){
+            res.send('booking is already prosseced')
+        }
+        else{
+            boockings.push(req.body)
+
+            res.send(boockings)
+        }
+    }
+    else res.send("Player NOT Being found")
+    
+})
 
 router.post('/players',function(req,res){
 
@@ -168,6 +182,69 @@ router.post('/players',function(req,res){
     } 
     else res.send("player Already Exist")
 
+})
+
+router.post("/get-query-1",function(req,res){
+    
+        let marks = req.query.marks
+
+        let result = marks>40 ? 'Pass':'Fail'
+        res.send({data:result , status:true})
+})
+let arr = [ 24,2,4,523456,23,57,43,54,890,4]
+
+router.post('/post-query-2',function(req,res){
+
+    let input = req.query.inp
+    console.log(req.query)
+    let finalArr = arr.filter(element => element >= input)
+    res.send({data:finalArr,status:true})
+})
+
+let persons = [
+    {
+        name:"PK",
+        age:10,
+        votingStatus:false
+    },
+    {
+        name:"SK",
+        age:20,
+        votingStatus:false
+    },
+    {
+        name:"AA",
+        age:70,
+        votingStatus:false
+    },
+    {
+        name:"SC",
+        age:5,
+        votingStatus:false
+    },
+    {
+        name:"PK",
+        age:40,
+        votingStatus:false
+    },
+]
+router.get('/personsVote',function(req,res){
+    let age = req.query.age
+    if(age)
+    {
+        let newPersons=persons.filter((element) => {
+            if(element.age>age)
+            {
+                element.votingStatus = true;
+                return element;
+            }
+        })
+        res.send(newPersons)
+    }
+    else
+    {
+        res.send("PLS Enter Valid Age")
+    }
 })
 
 module.exports = router;
