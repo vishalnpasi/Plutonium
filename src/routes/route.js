@@ -2,17 +2,21 @@ const express = require('express');
 const myHelper = require('../util/helper')
 const underscore = require('underscore');
 const { Router } = require('express');
+
 const UserModel = require("../models/useModel.js");
-const userController = require('../controllers/userController');
+
+//const userController = require('../controllers/userController');
 
 const router = express.Router();
 
-// router.post("/createUser",userController.creatUser);
-// router.post("/createUser", async function(req,res){
-//     let data = req.body
-//     let savedData = await UserModel.create(data)
-//     res.send({msg: savedData })
-// });
+//router.post("/createUser",userController.creatUser);
+
+router.post("/createUser", async function(req,res){
+    let data = req.body
+    let savedData = await UserModel.create(data)
+    console.log(savedData)
+    res.send({msg: savedData })
+});
 
 // router.get('/getUser',async function(req,res){
 //     let allUser = await UserModel.find();

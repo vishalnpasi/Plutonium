@@ -1,7 +1,7 @@
 const express = require('express');
 var bodyParser = require('body-parser');
 
-// const { default: mongoose } = require('mongoose')
+ const { default: mongoose } = require('mongoose')
 
 const route = require('./routes/route.js');
 
@@ -42,14 +42,14 @@ app.get("/sol2",function(req , res){
     res.send({data : missingNumber});
 })
 
-// mongoose.connect("mongodb+srv://vishalpasi:FbiA1ChEDTbvv6eL@cluster0.3xmrakz.mongodb.net/vishalpasi",{
-//     useNewUrlparser:true
-// })
-// .then( () => console.log("MongoDB is Connected"))
-// .catch( err => console.log(err))
+mongoose.connect("mongodb+srv://vishalpasi:FbiA1ChEDTbvv6eL@cluster0.3xmrakz.mongodb.net/vishalpasi",{
+    useNewUrlparser:true
+})
+.then( () => console.log("MongoDB is Connected"))
+.catch( err => console.log(err))
 
 
-app.listen(process.env.PORT || 8000, function() {
+app.listen(process.env.PORT || 3000, function() {
     console.log('Express app running on port ' + (process.env.PORT || 3000))
 });
 
