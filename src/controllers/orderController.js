@@ -20,7 +20,7 @@ const createOrder= async function (req, res) {
     if(! specificProduct){
          res.send({msg:"Product Doesn't Present"})
     }
-    else if(req.headers.isfreeappuser === 'true')
+    else if(req.headers.isfreeappuser === true)
     {
         let orderData = req.body
         orderData.amount = 0;
