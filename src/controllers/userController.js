@@ -41,6 +41,7 @@ const loginUser = async function (req, res) {
   );
   res.setHeader("x-auth-token", token);
   res.send({ status: true, token: token });
+  // "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzA4YzgwN2U5N2U0YjA1OWYxMDBhZGEiLCJiYXRjaCI6InRob3JpdW0iLCJvcmdhbmlzYXRpb24iOiJGdW5jdGlvblVwIiwiaWF0IjoxNjYxNTIwMDczfQ.uknLI3xIZLyq1ydp8GIHR4jleVIEzye8bVla1lCyzSw"
 };
 
 const getUserData = async function (req, res) {
