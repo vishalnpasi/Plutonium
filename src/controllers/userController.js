@@ -41,7 +41,7 @@ const loginUser = async function (req, res) {
   );
   res.setHeader("x-auth-token", token);
   res.send({ status: true, token: token });
-  // "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzA4YzgwN2U5N2U0YjA1OWYxMDBhZGEiLCJiYXRjaCI6InRob3JpdW0iLCJvcmdhbmlzYXRpb24iOiJGdW5jdGlvblVwIiwiaWF0IjoxNjYxNTIwMDczfQ.uknLI3xIZLyq1ydp8GIHR4jleVIEzye8bVla1lCyzSw"
+  //"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzA4YzgwN2U5N2U0YjA1OWYxMDBhZGEiLCJiYXRjaCI6InRob3JpdW0iLCJvcmdhbmlzYXRpb24iOiJGdW5jdGlvblVwIiwiaWF0IjoxNjYxNTk5ODQ5fQ.TCtaM1rrYYf1zOQCsTjTXbyqosCWznYj1-WRnrlqm1E"
 };
 
 const getUserData = async function (req, res) {
@@ -62,17 +62,34 @@ const getUserData = async function (req, res) {
   // Decoding requires the secret again. 
   // A token can only be decoded successfully if the same secret was used to create(sign) that token.
   // And because this token is only known to the server, it can be assumed that if a token is decoded at server then this token must have been issued by the same server in past.
-  let decodedToken = jwt.verify(token, "functionup-plutonium-very-very-secret-key");
-  if (!decodedToken)
-    return res.send({ status: false, msg: "token is invalid" });
+  
+  //Using ma'ams aproach...
+  // let decodedToken = jwt.verify(token, "functionup-plutonium-very-very-secret-key");
+  // if (!decodedToken)
+  //   return res.send({ status: false, msg: "token is invalid" });
 
-  let userId = req.params.userId;
-  let userDetails = await userModel.findById(userId);
-  if (!userDetails)
-    return res.send({ status: false, msg: "No such user exists" });
+  // let userId = req.params.userId;
+  // let userDetails = await userModel.findById(userId);
+  // if (!userDetails)
+  //   return res.send({ status: false, msg: "No such user exists" });
 
-  res.send({ status: true, data: userDetails });
+  // res.send({ status: true, data: userDetails });
   // Note: Try to see what happens if we change the secret while decoding the token
+
+  // My approach ..
+
+  try{
+      let decodedToken = jwt.verify(token, "functionup-plutonium-very-very-secret-key");
+      let userId = req.params.userId;
+      let userDetails = await userModel.findById(userId);
+      if (!userDetails)
+      return res.send({ status: false, msg: "No such user exists" });
+      res.send({ status: true, data: userDetails });
+  }
+  catch(err){
+      console.log(err)
+      return res.send({ status: false, msg: "token is invalid" });
+  }
 };
 
 const updateUser = async function (req, res) {
