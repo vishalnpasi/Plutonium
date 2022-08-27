@@ -44,7 +44,7 @@ const loginUser = async function (req, res) {
   //"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzA4YzgwN2U5N2U0YjA1OWYxMDBhZGEiLCJiYXRjaCI6InRob3JpdW0iLCJvcmdhbmlzYXRpb24iOiJGdW5jdGlvblVwIiwiaWF0IjoxNjYxNTk5ODQ5fQ.TCtaM1rrYYf1zOQCsTjTXbyqosCWznYj1-WRnrlqm1E"
 };
 
-const getUserData = async function (req, res) {
+const getUserData = async function (req, res , next) {
   let token = req.headers["x-Auth-token"];
   if (!token) token = req.headers["x-auth-token"];
 
@@ -90,6 +90,22 @@ const getUserData = async function (req, res) {
       console.log(err)
       return res.send({ status: false, msg: "token is invalid" });
   }
+
+  // second method using call back function....
+  //they have some errors
+
+  // let decodedToken = jwt.verify(token, "functionup-plutonium-very-very-secret-key",
+  //     function(err, decode){
+  //       if(err)
+  //         return res.send({ status: false, msg: "token is invalid" });   
+  //       next();
+  //     });
+  // let userId = req.params.userId;
+  // let userDetails = await userModel.findById(userId);
+  // if (!userDetails)
+  //   return res.send({ status: false, msg: "No such user exists" });
+
+  // res.send({ status: true, data: userDetails });
 };
 
 const updateUser = async function (req, res) {
