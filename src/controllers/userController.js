@@ -21,21 +21,25 @@ const loginUser = async function (req, res) {
       userId: user._id.toString(),
       organisation: "FunctionUp",
     },
-    "functionup-plutonium-very-very-secret-key"
+    "functionup-plutonium-secret-key"
   );
   res.setHeader("x-auth-token", token);
   res.send({ status: true, token: token });
-  //"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzBhNDAyNTJlZWFhNWFmODEzODY1YWQiLCJvcmdhbmlzYXRpb24iOiJGdW5jdGlvblVwIiwiaWF0IjoxNjYxNjE2MzA1fQ.g-TyZqfKq7hDiuWQLW2R0_0EAkI8XFhh2euOap1-btw"
+  //"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzBjZjE3MzUwNzc4Yzc2N2FlZmI1ODMiLCJvcmdhbmlzYXRpb24iOiJGdW5jdGlvblVwIiwiaWF0IjoxNjYxNzk4MzI4fQ.MEATkdulQrFMSkPb7O8Y_9fIJWfYnDNUsSF2VfQJSzg"
 };
 
 //3) GetUser.....
 const getUserData = async function (req, res , next) {
      
   let userId = req.params.userId;
-  let userDetails = await userModel.findById(userId);
-  if (!userDetails)
+  try{
+    let userDetails = await userModel.findById(userId);
+    if(!userDetails) return res.send({status:false,msg:"No such user exists"})
+    res.send({ status: true, data: userDetails });
+  }
+  catch(err){
     return res.send({ status: false, msg: "No such user exists" });
-  res.send({ status: true, data: userDetails });
+  }
 };
 
 //4) PUT) UpdateUser...
@@ -45,8 +49,8 @@ const updateUser = async function (req, res) {
     let userId = req.params.userId;
     let userData = req.body;
     let updatedUser = await userModel.findOneAndUpdate({ _id: userId }, userData,{new:true});
-    if(!updatedUser) 
-      return res.send({ status: false, msg: "No such user exists" });
+    if(!updatedUser) // if updateUser == null , undefined
+      return res.send({ status: false, msg: "No such user exists " });
     res.send({ status: true, data: updatedUser });
   }
   catch(err){
