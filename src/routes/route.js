@@ -18,8 +18,10 @@ router.get("/test-me", function (req, res) {
 // -how to write promise:- wrap your entire code inside: "return new Promise( function(resolve, reject) { "...and when error - return reject( err )..else when all ok and you have data, return resolve (data)
 
 aws.config.update({
-    accessKeyId: "AKIAY3L35MCRVFM24Q7U",
-    secretAccessKeyId: "qGG1HE0qRixcW1T1Wg1bv+08tQrIkFVyDFqSft4J",
+    // accessKeyId: "AKIAY3L35MCRVFM24Q7U",
+    // secretAccessKey: "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",
+    accessKeyId: "AKIAY3L35MCRZNIRGT6N",
+    secretAccessKey: "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",
     region: "ap-south-1"
 })
 
@@ -34,7 +36,6 @@ let uploadFile= async ( file) =>{
         Key: "abc/" + file.originalname, //HERE 
         Body: file.buffer
     }
-
 
     s3.upload( uploadParams, function (err, data ){
         if(err) {
